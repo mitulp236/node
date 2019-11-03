@@ -7,7 +7,7 @@ const router = express();
 router.post('/signup',async (req,res) => {
     // check : user is alrery exist or not
     const user_possible = await user.findOne({email:req.body.email});
-    if(user_possible) {return res.status(400).json({ message: 'user already exist' });}
+    if(user_possible) return res.status(203).send({ message: 'user already exist' });
     // Encrypt password
     const salt = await bcrypt.genSalt(10);
     const hash_password =await bcrypt.hash(req.body.password, salt);
@@ -22,7 +22,7 @@ router.post('/signup',async (req,res) => {
         const result = await data.save()
         res.json({ message:result });
     }catch(err){
-        res.status(400).json({ message:err });
+        res.status(203).json({ message:err });
     }
 });
 
@@ -37,7 +37,9 @@ router.post('/login',async (req,res) => {
     //create and assign token
     const token  = jwt.sign({_id:user_data._id},process.env.TOKEN_SECRET);
     res.header('auth-token',token).send(token);
+    // return res.status(200).json({ message: 'done' });
 });
+
 
 
 module.exports = router;
