@@ -29,10 +29,10 @@ router.post('/signup',async (req,res) => {
 router.post('/login',async (req,res) => {
     // check : user is exist or not
     const user_data = await user.findOne({email:req.body.email});
-    if(!user_data) return res.status(400).json({ message: 'emaill not registed ! ' });
+    if(!user_data) return res.status(203).json({ message: 'emaill not registed ! ' });
     // credencial checking
     const valid_password = await bcrypt.compare(req.body.password,user_data.password);
-    if(!valid_password) return res.status(400).json({ message: 'Invalid pasword' });
+    if(!valid_password) return res.status(203).json({ message: 'Invalid pasword' });
     // after succefully loggedd in
     //create and assign token
     const token  = jwt.sign({_id:user_data._id},process.env.TOKEN_SECRET);
